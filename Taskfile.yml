@@ -1,0 +1,37 @@
+version: '3'
+
+tasks:
+  run:
+    desc: Run the GoZen application
+    cmds:
+      - go run ./src/cmd/main.go
+    silent: false
+    
+  dev:
+    desc: Run the GoZen application in development mode with auto-reload
+    cmds:
+      - go run ./src/cmd/main.go
+    silent: false
+    ignore_error: true
+    
+  build:
+    desc: Build the GoZen application
+    cmds:
+      - mkdir -p bin
+      - go build -o bin/gozen ./src/cmd/main.go
+    
+  clean:
+    desc: Remove build artifacts
+    cmds:
+      - rm -rf bin
+      
+  test:
+    desc: Run tests
+    cmds:
+      - go test ./...
+      
+  deps:
+    desc: Download and tidy dependencies
+    cmds:
+      - go mod download
+      - go mod tidy
