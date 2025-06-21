@@ -1,107 +1,21 @@
-// package logger
-
-// import (
-// 	"os"
-
-// 	"go.uber.org/zap"
-// 	"go.uber.org/zap/zapcore"
-// )
-
-// var Logger *zap.Logger
-
-// func init() {
-// 	InitLogger()
-// }
-
-// // InitLogger initializes the global logger
-// func InitLogger() {
-// 	config := zap.NewProductionConfig()
-
-// 	// Set log level based on environment
-// 	if os.Getenv("APP_ENV") == "development" {
-// 		config = zap.NewDevelopmentConfig()
-// 		config.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
-// 	} else {
-// 		config.Level = zap.NewAtomicLevelAt(zap.InfoLevel)
-// 	}
-
-// 	// Customize time format
-// 	config.EncoderConfig.TimeKey = "timestamp"
-// 	config.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
-
-// 	var err error
-// 	Logger, err = config.Build()
-// 	if err != nil {
-// 		panic("Failed to initialize logger: " + err.Error())
-// 	}
-// }
-
-// // Info logs an info message
-// func Info(msg string, fields ...zap.Field) {
-// 	Logger.Info(msg, fields...)
-// }
-
-// // Error logs an error message
-// func Error(msg string, fields ...zap.Field) {
-// 	Logger.Error(msg, fields...)
-// }
-
-// // Debug logs a debug message
-// func Debug(msg string, fields ...zap.Field) {
-// 	Logger.Debug(msg, fields...)
-// }
-
-// // Warn logs a warning message
-// func Warn(msg string, fields ...zap.Field) {
-// 	Logger.Warn(msg, fields...)
-// }
-
-// // Fatal logs a fatal message and exits
-// func Fatal(msg string, fields ...zap.Field) {
-// 	Logger.Fatal(msg, fields...)
-// }
-
-// // With creates a child logger with additional fields
-// func With(fields ...zap.Field) *zap.Logger {
-// 	return Logger.With(fields...)
-// }
-
-// // Sync flushes any buffered log entries
-// func Sync() {
-// 	Logger.Sync()
-// }
-
-
-// logger/logger.go
 package logger
 
 import (
 	"fmt"
-	"os"
-	"strings"
-
+	"github.com/imraushankr/gozen/src/internal/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"os"
+	"strings"
 )
 
 var Logger *zap.Logger
 
-type Config struct {
-	Level      string `yaml:"level"`
-	Format     string `yaml:"format"`
-	Output     string `yaml:"output"`
-	FilePath   string `yaml:"file_path"`
-	MaxSize    int    `yaml:"max_size"`
-	MaxBackups int    `yaml:"max_backups"`
-	MaxAge     int    `yaml:"max_age"`
-	Compress   bool   `yaml:"compress"`
-}
-
 // InitLogger initializes the global logger with custom configuration
-func InitLogger(config *Config) error {
+func InitLogger(loggerConfig *config.LoggerConfig) error {
 	// Parse log level
-	level, err := parseLogLevel(config.Level)
+	level, err := parseLogLevel(loggerConfig.Level)
 	if err != nil {
 		return fmt.Errorf("invalid log level: %w", err)
 	}
@@ -123,7 +37,7 @@ func InitLogger(config *Config) error {
 
 	// Create encoder
 	var encoder zapcore.Encoder
-	if strings.ToLower(config.Format) == "json" {
+	if strings.ToLower(loggerConfig.Format) == "json" {
 		encoder = zapcore.NewJSONEncoder(encoderConfig)
 	} else {
 		encoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
@@ -132,24 +46,24 @@ func InitLogger(config *Config) error {
 
 	// Create writer syncer
 	var writeSyncer zapcore.WriteSyncer
-	switch strings.ToLower(config.Output) {
+	switch strings.ToLower(loggerConfig.Output) {
 	case "stdout":
 		writeSyncer = zapcore.AddSync(os.Stdout)
 	case "stderr":
 		writeSyncer = zapcore.AddSync(os.Stderr)
 	case "file":
-		if config.FilePath == "" {
+		if loggerConfig.FilePath == "" {
 			return fmt.Errorf("file path is required when output is file")
 		}
 		writeSyncer = zapcore.AddSync(&lumberjack.Logger{
-			Filename:   config.FilePath,
-			MaxSize:    config.MaxSize,
-			MaxBackups: config.MaxBackups,
-			MaxAge:     config.MaxAge,
-			Compress:   config.Compress,
+			Filename:   loggerConfig.FilePath,
+			MaxSize:    loggerConfig.MaxSize,
+			MaxBackups: loggerConfig.MaxBackups,
+			MaxAge:     loggerConfig.MaxAge,
+			Compress:   loggerConfig.Compress,
 		})
 	default:
-		return fmt.Errorf("invalid output type: %s", config.Output)
+		return fmt.Errorf("invalid output type: %s", loggerConfig.Output)
 	}
 
 	// Create core
@@ -157,23 +71,22 @@ func InitLogger(config *Config) error {
 
 	// Create logger
 	Logger = zap.New(core, zap.AddCaller(), zap.AddStacktrace(zapcore.ErrorLevel))
-
 	return nil
 }
 
 // InitDefaultLogger initializes logger with default settings
 func InitDefaultLogger() {
-	config := &Config{
+	loggerConfig := &config.LoggerConfig{
 		Level:      "info",
 		Format:     "console",
 		Output:     "stdout",
+		FilePath:   "",
 		MaxSize:    100,
 		MaxBackups: 3,
 		MaxAge:     28,
 		Compress:   true,
 	}
-
-	if err := InitLogger(config); err != nil {
+	if err := InitLogger(loggerConfig); err != nil {
 		panic("Failed to initialize default logger: " + err.Error())
 	}
 }

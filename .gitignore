@@ -35,4 +35,6 @@ go.work.sum
 gozen.db
 
 # configuration file
-/config/config.yaml
+config.yaml
+
+st.txt
