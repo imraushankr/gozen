@@ -1,67 +1,62 @@
 package main
 
 import (
-	"log"
-
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/imraushankr/gozen/src/internal/config"
-	"github.com/imraushankr/gozen/src/internal/db"
+	"github.com/imraushankr/gozen/src/pkg/logger"
+	"go.uber.org/zap"
 )
 
 func main() {
 	// Load configuration
-	cfg := config.LoadConfig()
-
-	// Initialize database
-	db, err := db.NewDatabase(cfg)
+	cfg, err := config.LoadConfig()
 	if err != nil {
-		log.Fatal("Failed to connect to database:", err)
+		panic("Failed to load configuration: " + err.Error())
 	}
 
-	// Initialize Fiber app
-	app := fiber.New(fiber.Config{
-		ErrorHandler: func(c *fiber.Ctx, err error) error {
-			code := fiber.StatusInternalServerError
-			if e, ok := err.(*fiber.Error); ok {
-				code = e.Code
-			}
-			return c.Status(code).JSON(fiber.Map{
-				"error": err.Error(),
-			})
-		},
-	})
+	// Convert config.LoggerConfig to logger.Config
+	loggerConfig := &logger.Config{
+		Level:      cfg.Logger.Level,
+		Format:     cfg.Logger.Format,
+		Output:     cfg.Logger.Output,
+		FilePath:   cfg.Logger.FilePath,
+		MaxSize:    cfg.Logger.MaxSize,
+		MaxBackups: cfg.Logger.MaxBackups,
+		MaxAge:     cfg.Logger.MaxAge,
+		Compress:   cfg.Logger.Compress,
+	}
 
-	// Middleware
-	app.Use(logger.New())
-	app.Use(cors.New())
+	// Initialize logger with config
+	if err := logger.InitLogger(loggerConfig); err != nil {
+		panic("Failed to initialize logger: " + err.Error())
+	}
+	defer logger.Sync()
 
-	// Routes
-	setupRoutes(app, db, cfg)
+	// Log application startup
+	logger.Info("Starting application",
+		zap.String("name", cfg.App.Name),
+		zap.String("version", cfg.App.Version),
+		zap.String("environment", cfg.App.Environment),
+		zap.String("server", cfg.Server.Host+":"+cfg.Server.Port),
+	)
 
-	// Start server
-	log.Printf("Server starting on %s:%s", cfg.Server.Host, cfg.Server.Port)
-	log.Fatal(app.Listen(cfg.Server.Host + ":" + cfg.Server.Port))
-}
+	// Example of using configuration
+	logger.Info("Database configuration",
+		zap.String("type", cfg.Database.Type),
+		zap.String("database", cfg.Database.Database),
+		zap.Int("max_open_conns", cfg.Database.MaxOpenConns),
+	)
 
-func setupRoutes(app *fiber.App, db *db.Database, cfg *config.Config) {
-	api := app.Group("/api/v1")
+	// Example of using email configuration
+	if cfg.Email.Provider != "" {
+		logger.Info("Email configuration loaded",
+			zap.String("provider", cfg.Email.Provider),
+			zap.String("smtp_host", cfg.Email.SMTP.Host),
+			zap.Int("smtp_port", cfg.Email.SMTP.Port),
+			zap.Bool("use_tls", cfg.Email.SMTP.UseTLS),
+		)
+	}
 
-	// Health check
-	api.Get("/health", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{
-			"status":   "ok",
-			"database": db.Type,
-		})
-	})
-
-	// Auth routes would go here
-	// auth := api.Group("/auth")
-	// auth.Post("/register", registerHandler)
-	// auth.Post("/login", loginHandler)
-	// auth.Post("/refresh", refreshTokenHandler)
-	// auth.Post("/logout", logoutHandler)
-	// auth.Post("/forgot-password", forgotPasswordHandler)
-	// auth.Post("/reset-password", resetPasswordHandler)
+	// Your application logic here...
+	
+	logger.Info("Application started successfully")
 }

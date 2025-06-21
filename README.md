@@ -1,3 +1,65 @@
+# GoZen - Complete Backend Framework
+
+## Project Structure
+```
+gozen/
+├── config/
+│   └── config.yaml
+├── src/
+│   ├── api/
+│   │   └── routes.go
+│   ├── cmd/
+│   │   └── server/
+│   │       └── main.go
+│   ├── internal/
+│   │   ├── config/
+│   │   │   └── config.go
+│   │   ├── controller/
+│   │   │   ├── auth_controller.go
+│   │   │   ├── user_controller.go
+│   │   │   └── todo_controller.go
+│   │   ├── db/
+│   │   │   └── db.go
+│   │   ├── middleware/
+│   │   │   ├── auth.go
+│   │   │   ├── cors.go
+│   │   │   └── rate_limit.go
+│   │   ├── models/
+│   │   │   ├── user_model.go
+│   │   │   ├── todo_model.go
+│   │   │   └── base_model.go
+│   │   ├── repo/
+│   │   │   ├── interfaces.go
+│   │   │   ├── user_repo.go
+│   │   │   └── todo_repo.go
+│   │   ├── routes/
+│   │   │   ├── auth_routes.go
+│   │   │   ├── user_routes.go
+│   │   │   └── todo_routes.go
+│   │   ├── security/
+│   │   │   ├── hash.go
+│   │   │   ├── jwt.go
+│   │   │   ├── password_reset.go
+│   │   │   └── validator.go
+│   │   └── service/
+│   │       ├── interfaces.go
+│   │       ├── auth_service.go
+│   │       ├── user_service.go
+│   │       ├── todo_service.go
+│   │       └── email_service.go
+│   └── pkg/
+│       ├── logger/
+│       │   └── logger.go
+│       ├── response/
+│       │   └── response.go
+│       └── utils/
+│           ├── pagination.go
+│           └── helpers.go
+├── .env
+├── go.mod
+└── go.sum
+```
+
 **`gozen`** – *The Minimalist Go Backend Framework*
 
 **Description:**

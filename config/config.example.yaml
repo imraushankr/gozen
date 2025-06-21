@@ -1,0 +1,29 @@
+server:
+  host: "localhost"
+  port: port_number
+
+database:
+  type: sqlite # sqlite, mysql, postgresql, mongodb
+  host: localhost
+  port: 5432
+  username: ""
+  password: ""
+  database: your_db_name
+  ssl_mode: disable
+
+jwt:
+  access_token_secret: your_access_token_secret
+  access_token_expiry: your_access_token_expiry
+  refresh_token_secret: your_refresh_token_secret
+  refresh_token_expiry: your_refresh_token_expiry
+
+email:
+  provider: smtp
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    username: your_email@gmail.com
+    password: your_app_password
+    from_email: your_email@gmail.com
+    from_name: "GoZen App"
+    use_tls: true
