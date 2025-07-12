@@ -1,0 +1,59 @@
+app:
+  name: "GoZen"
+  version: "1.0.0"
+  environment: "${APP_ENV}"
+  debug: "${APP_DEBUG}"
+
+server:
+  host: "${SERVER_HOST}"
+  port: "${SERVER_PORT}"
+  read_timeout: "${SERVER_READ_TIMEOUT}"
+  write_timeout: "${SERVER_WRITE_TIMEOUT}"
+  shutdown_timeout: "${SERVER_SHUTDOWN_TIMEOUT}"
+
+database:
+  type: "${DB_TYPE}"
+  host: "${DB_HOST}"
+  port: "${DB_PORT}"
+  username: "${DB_USERNAME}"
+  password: "${DB_PASSWORD}"
+  database: "${DB_NAME}"
+  ssl_mode: "${DB_SSL_MODE}"
+  max_open_conns: "${DB_MAX_OPEN_CONNS}"
+  max_idle_conns: "${DB_MAX_IDLE_CONNS}"
+  conn_max_lifetime: "${DB_CONN_MAX_LIFETIME}"
+
+jwt:
+  access_token_secret: "${JWT_ACCESS_SECRET}"
+  access_token_expiry: "${JWT_ACCESS_EXPIRY}"
+  refresh_token_secret: "${JWT_REFRESH_SECRET}"
+  refresh_token_expiry: "${JWT_REFRESH_EXPIRY}"
+  issuer: "${JWT_ISSUER}"
+
+email:
+  provider: "${EMAIL_PROVIDER}"
+  smtp:
+    host: "${SMTP_HOST}"
+    port: "${SMTP_PORT}"
+    username: "${SMTP_USERNAME}"
+    password: "${SMTP_PASSWORD}"
+    from_email: "${SMTP_FROM_EMAIL}"
+    from_name: "${SMTP_FROM_NAME}"
+    use_tls: "${SMTP_USE_TLS}"
+
+logger:
+  level: "${LOG_LEVEL}"      
+  format: "${LOG_FORMAT}"    
+  output: "${LOG_OUTPUT}"     
+  file_path: "${LOG_FILE_PATH}"
+  max_size: "${LOG_MAX_SIZE}"    
+  max_backups: "${LOG_MAX_BACKUPS}"
+  max_age: "${LOG_MAX_AGE}"       
+  compress: "${LOG_COMPRESS}"
+
+cors:
+  allow_origins: "${CORS_ALLOW_ORIGINS}"
+  allow_methods: "${CORS_ALLOW_METHODS}"
+  allow_headers: "${CORS_ALLOW_HEADERS}"
+  allow_credentials: "${CORS_ALLOW_CREDENTIALS}"
+  max_age: "${CORS_MAX_AGE}"

@@ -1,0 +1,32 @@
+version: '3'
+
+tasks:
+  gozen:
+    desc: Run the GoZen application
+    cmds:
+      - go run src/cmd/server/main.go
+
+  migration-create:
+    desc: 'Create new migration files - Usage: task migration-create -- <migration_name>'
+    cmds:
+      - go run src/cmd/migrate/create/main.go {{.CLI_ARGS}}
+
+  migrate-up:
+    desc: Run all pending migrations
+    cmds:
+      - go run src/cmd/migrate/run/main.go up
+
+  migrate-down:
+    desc: Rollback the last migration
+    cmds:
+      - go run src/cmd/migrate/run/main.go down
+
+  migrate-status:
+    desc: Show migration status
+    cmds:
+      - go run src/cmd/migrate/run/main.go status
+
+  migrate-version:
+    desc: Show current migration version
+    cmds:
+      - go run src/cmd/migrate/run/main.go version
