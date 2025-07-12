@@ -5,9 +5,9 @@ import (
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/imraushankr/gozen/src/configs"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"gozen/src/configs"
 )
 
 func newMySQLDB(cfg *configs.DatabaseConfig) (*DB, error) {

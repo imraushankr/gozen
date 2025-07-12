@@ -2,8 +2,9 @@ package repository
 
 import (
 	"context"
-	"gozen/src/internal/domain"
-	"gozen/src/internal/pkg/database"
+
+	"github.com/imraushankr/gozen/src/internal/domain"
+	"github.com/imraushankr/gozen/src/internal/pkg/database"
 )
 
 type userRepository struct {

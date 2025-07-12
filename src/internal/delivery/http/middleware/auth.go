@@ -1,12 +1,12 @@
 package middleware
 
 import (
-	"gozen/src/internal/pkg/auth"
-	"gozen/src/internal/pkg/logger"
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/imraushankr/gozen/src/internal/pkg/auth"
+	"github.com/imraushankr/gozen/src/internal/pkg/logger"
 	"go.uber.org/zap"
 )
 

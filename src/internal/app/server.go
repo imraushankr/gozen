@@ -7,10 +7,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"gozen/src/configs"
-	"gozen/src/internal/pkg/database"
-	"gozen/src/internal/pkg/logger"
-
+	"github.com/imraushankr/gozen/src/configs"
+	"github.com/imraushankr/gozen/src/internal/pkg/database"
+	"github.com/imraushankr/gozen/src/internal/pkg/logger"
 	"go.uber.org/zap"
 )
 

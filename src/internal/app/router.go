@@ -1,14 +1,13 @@
 package app
 
 import (
-	"gozen/src/configs"
-	"gozen/src/internal/delivery/http/middleware"
-	v1 "gozen/src/internal/delivery/http/v1"
-	"gozen/src/internal/pkg/database"
-	"gozen/src/internal/repository"
-	"gozen/src/internal/usecase"
-
 	"github.com/gin-gonic/gin"
+	"github.com/imraushankr/gozen/src/configs"
+	"github.com/imraushankr/gozen/src/internal/delivery/http/middleware"
+	v1 "github.com/imraushankr/gozen/src/internal/delivery/http/v1"
+	"github.com/imraushankr/gozen/src/internal/pkg/database"
+	"github.com/imraushankr/gozen/src/internal/repository"
+	"github.com/imraushankr/gozen/src/internal/usecase"
 )
 
 func SetupRouter(cfg *configs.Config, db *database.DB) *gin.Engine {
@@ -52,11 +51,11 @@ func SetupRouter(cfg *configs.Config, db *database.DB) *gin.Engine {
 			auth.POST("/refresh", userHandler.Signout)
 		}
 
-		// Protected user routes 
+		// Protected user routes
 		// user := api.Group("/users", middleware.AuthMiddleware(cfg.JWT.AccessTokenSecret)) {
 		// 	// user.GET("/me", userHandler.GetProfile)
 		// }
- 	}
+	}
 
 	return router
 }

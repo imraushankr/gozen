@@ -3,10 +3,10 @@ package database
 import (
 	"database/sql"
 
+	"github.com/imraushankr/gozen/src/configs"
 	_ "github.com/mattn/go-sqlite3"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"gozen/src/configs"
 )
 
 func newSQLiteDB(cfg *configs.DatabaseConfig) (*DB, error) {

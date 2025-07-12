@@ -1,11 +1,11 @@
 package logger
 
 import (
-	"gozen/src/configs"
 	"os"
 	"path/filepath"
 	"time"
 
+	"github.com/imraushankr/gozen/src/configs"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"

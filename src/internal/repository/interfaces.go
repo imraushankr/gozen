@@ -1,10 +1,9 @@
-
-
 package repository
 
 import (
 	"context"
-	"gozen/src/internal/domain"
+
+	"github.com/imraushankr/gozen/src/internal/domain"
 )
 
 type UserRepository interface {

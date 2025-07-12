@@ -1,59 +1,15 @@
-// package email
-
-// import (
-// 	"fmt"
-// 	"gozen/src/configs"
-// 	"net/smtp"
-// 	"strings"
-// )
-
-// type Email struct {
-// 	From    string
-// 	To      []string
-// 	Subject string
-// 	Body    string
-// }
-
-// type Service struct {
-// 	emailConfig configs.EmailConfig
-// }
-
-// func NewService(cfg *configs.EmailConfig) *Service {
-// 	return &Service{
-// 		emailConfig: *cfg,
-// 	}
-// }
-
-// func (s *Service) Send(email Email) error {
-// 	auth := smtp.PlainAuth("", s.emailConfig.SMTP.Username, s.emailConfig.SMTP.Password, s.emailConfig.SMTP.Host)
-
-// 	msg := fmt.Sprintf(
-// 		"From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n%s",
-// 		email.From,
-// 		strings.Join(email.To, ","),
-// 		email.Subject,
-// 		email.Body,
-// 	)
-
-// 	return smtp.SendMail(
-// 		fmt.Sprintf("%s:%d", s.emailConfig.SMTP.Host, s.emailConfig.SMTP.Port),
-// 		auth,
-// 		email.From,
-// 		email.To,
-// 		[]byte(msg),
-// 	)
-// }
-
 package email
 
 import (
 	"bytes"
 	"fmt"
-	"gozen/src/configs"
+
 	"net/mail"
 	"net/smtp"
 	"strings"
 	"text/template"
+
+	"github.com/imraushankr/gozen/src/configs"
 )
 
 type Email struct {

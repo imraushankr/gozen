@@ -3,10 +3,11 @@ package database
 import (
 	"context"
 	"fmt"
-	"gozen/src/configs"
-	"gozen/src/internal/pkg/logger"
+
 	"time"
-	
+
+	"github.com/imraushankr/gozen/src/configs"
+	"github.com/imraushankr/gozen/src/internal/pkg/logger"
 	"go.uber.org/zap"
 )
 

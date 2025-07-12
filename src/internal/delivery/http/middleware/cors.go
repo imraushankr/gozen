@@ -2,11 +2,11 @@ package middleware
 
 import (
 	"fmt"
-	"gozen/src/configs"
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/imraushankr/gozen/src/configs"
 )
 
 func CORS(cfg *configs.CORSConfig) gin.HandlerFunc {

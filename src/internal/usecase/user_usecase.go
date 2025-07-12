@@ -6,11 +6,10 @@ import (
 	"fmt"
 	"time"
 
-	"gozen/src/configs"
-	"gozen/src/internal/domain"
-	"gozen/src/internal/pkg/auth"
-	"gozen/src/internal/repository"
-
+	"github.com/imraushankr/gozen/src/configs"
+	"github.com/imraushankr/gozen/src/internal/domain"
+	"github.com/imraushankr/gozen/src/internal/pkg/auth"
+	"github.com/imraushankr/gozen/src/internal/repository"
 	"gorm.io/gorm"
 )
 
@@ -25,56 +24,6 @@ func NewUserUsecase(userRepo repository.UserRepository, cfg *configs.JWTConfig) 
 		cfg:      cfg,
 	}
 }
-
-// func (uc *userUsecase) Signup(ctx context.Context, user *domain.User) error {
-// 	if user.Email == "" || user.Username == "" || user.Password == "" {
-// 		return domain.ErrInvalidInput
-// 	}
-
-// 	// existingUser, err := uc.userRepo.FindByEmail(ctx, user.Email)
-// 	// if err != nil {
-// 	// 	return fmt.Errorf("failed to check email existence: %w", err)
-// 	// }
-// 	// if existingUser != nil {
-// 	// 	return domain.ErrEmailAlreadyExists
-// 	// }
-
-// 	existingUser, err := uc.userRepo.FindByEmail(ctx, user.Email)
-// 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-// 		return fmt.Errorf("failed to check email existence: %w", err)
-// 	}
-// 	if existingUser != nil && existingUser.Email == user.Email {
-// 		return domain.ErrEmailAlreadyExists
-// 	}
-
-// 	existingUser, err = uc.userRepo.FindByUsername(ctx, user.Username)
-// 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-// 		return fmt.Errorf("failed to check username existence: %w", err)
-// 	}
-// 	if existingUser != nil && existingUser.Username == user.Username {
-// 		return domain.ErrUsernameAlreadyExists
-// 	}
-
-// 	hashPassword, err := auth.HashPassword(user.Password)
-// 	if err != nil {
-// 		return fmt.Errorf("failed to hash password: %w", err)
-// 	}
-// 	user.Password = hashPassword
-
-// 	if user.Role == "" {
-// 		user.Role = domain.RoleUser
-// 	}
-
-// 	now := time.Now()
-// 	user.CreatedAt = now
-// 	user.UpdatedAt = now
-
-// 	if err := uc.userRepo.Create(ctx, user); err != nil {
-// 		return fmt.Errorf("failed to create user: %w", err)
-// 	}
-
-// 	return nil
-// }
 
 func (uc *userUsecase) Signup(ctx context.Context, user *domain.User) error {
 	if user.Email == "" || user.Username == "" || user.Password == "" || user.Phone == "" {

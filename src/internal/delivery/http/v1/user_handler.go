@@ -2,14 +2,14 @@ package v1
 
 import (
 	"errors"
-	"gozen/src/configs"
-	"gozen/src/internal/domain"
-	"gozen/src/internal/pkg/logger"
-	"gozen/src/internal/usecase"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/imraushankr/gozen/src/configs"
+	"github.com/imraushankr/gozen/src/internal/domain"
+	"github.com/imraushankr/gozen/src/internal/pkg/logger"
+	"github.com/imraushankr/gozen/src/internal/usecase"
 	"go.uber.org/zap"
 )
 

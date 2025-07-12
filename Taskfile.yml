@@ -1,32 +1,82 @@
 version: '3'
 
-tasks:
-  gozen:
-    desc: Run the GoZen application
-    cmds:
-      - go run src/cmd/server/main.go
+vars:
+  GO_MODULE: "github.com/imraushankr/gozen"
+  SERVER_CMD: "src/cmd/server/main.go"
+  MIGRATE_CREATE_CMD: "src/cmd/migrate/create/main.go"
+  MIGRATE_RUN_CMD: "src/cmd/migrate/run/main.go"
 
-  migration-create:
-    desc: 'Create new migration files - Usage: task migration-create -- <migration_name>'
+tasks:
+  # Main application commands
+  run:
+    desc: Run the GoZen application (with hot-reload using air)
     cmds:
-      - go run src/cmd/migrate/create/main.go {{.CLI_ARGS}}
+      - air -c .air.toml || go run {{.SERVER_CMD}}
+
+  build:
+    desc: Build the application
+    cmds:
+      - go build -o bin/gozen {{.SERVER_CMD}}
+
+  test:
+    desc: Run all tests
+    cmds:
+      - go test ./...
+
+  # Database migration commands
+  migration-create:
+    desc: Create new migration files
+    cmds:
+      - go run {{.MIGRATE_CREATE_CMD}} {{.CLI_ARGS}}
+    silent: true
 
   migrate-up:
     desc: Run all pending migrations
     cmds:
-      - go run src/cmd/migrate/run/main.go up
+      - go run {{.MIGRATE_RUN_CMD}} up
 
   migrate-down:
     desc: Rollback the last migration
     cmds:
-      - go run src/cmd/migrate/run/main.go down
+      - go run {{.MIGRATE_RUN_CMD}} down
 
   migrate-status:
     desc: Show migration status
     cmds:
-      - go run src/cmd/migrate/run/main.go status
+      - go run {{.MIGRATE_RUN_CMD}} status
 
   migrate-version:
     desc: Show current migration version
     cmds:
-      - go run src/cmd/migrate/run/main.go version
+      - go run {{.MIGRATE_RUN_CMD}} version
+
+  # Development utilities
+  tidy:
+    desc: Tidy Go modules
+    cmds:
+      - go mod tidy
+
+  vet:
+    desc: Run go vet
+    cmds:
+      - go vet ./...
+
+  lint:
+    desc: Run golangci-lint
+    cmds:
+      - golangci-lint run
+
+  # Combined tasks
+  setup:
+    desc: Setup development environment
+    cmds:
+      - task: tidy
+      - go install github.com/cosmtrek/air@latest
+      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+
+  ci:
+    desc: Run CI checks (test + lint + vet)
+    cmds:
+      - task: test
+      - task: lint
+      - task: vet

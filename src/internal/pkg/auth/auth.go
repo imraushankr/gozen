@@ -3,11 +3,11 @@ package auth
 import (
 	"errors"
 	"fmt"
-	"gozen/src/configs"
-	"gozen/src/internal/pkg/logger"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/imraushankr/gozen/src/configs"
+	"github.com/imraushankr/gozen/src/internal/pkg/logger"
 	"go.uber.org/zap"
 )
 

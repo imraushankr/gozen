@@ -4,10 +4,10 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/imraushankr/gozen/src/configs"
 	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gozen/src/configs"
 )
 
 func newPostgresDB(cfg *configs.DatabaseConfig) (*DB, error) {

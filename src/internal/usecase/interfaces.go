@@ -1,10 +1,9 @@
-
-
 package usecase
 
 import (
 	"context"
-	"gozen/src/internal/domain"
+
+	"github.com/imraushankr/gozen/src/internal/domain"
 )
 
 type UserUsecase interface {

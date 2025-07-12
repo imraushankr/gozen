@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"gozen/src/configs"
+	"github.com/imraushankr/gozen/src/configs"
 )
 
 func Environment(cfg *configs.Config) gin.HandlerFunc {
