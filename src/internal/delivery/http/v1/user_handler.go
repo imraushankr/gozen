@@ -26,13 +26,13 @@ func NewUserHandler(userUsecase *usecase.UserUsecase, cfg *configs.JWTConfig) *u
 }
 
 type signupRequest struct {
-	FirtName string `json:"first_name" binding:"required"`
-	LastName string `json:"last_name" binding:"required"`
-	Username string `json:"username" binding:"required"`
-	Email    string `json:"email" binding:"required,email"`
-	Phone    string `json:"phone" binding:"required,min=10,max=15"`
-	Password string `json:"password" binding:"required,min=8"`
-	Role     string `json:"role"`
+	FirstName string `json:"first_name" binding:"required"`
+	LastName  string `json:"last_name" binding:"required"`
+	Username  string `json:"username" binding:"required"`
+	Email     string `json:"email" binding:"required,email"`
+	Phone     string `json:"phone" binding:"required,min=10,max=15"`
+	Password  string `json:"password" binding:"required,min=8"`
+	Role      string `json:"role"`
 }
 
 type signinRequest struct {
@@ -79,7 +79,7 @@ func (h *userHandler) Signup(c *gin.Context) {
 	}
 
 	user := &domain.User{
-		FirstName: req.FirtName,
+		FirstName: req.FirstName,
 		LastName:  req.LastName,
 		Username:  req.Username,
 		Email:     req.Email,
@@ -95,7 +95,7 @@ func (h *userHandler) Signup(c *gin.Context) {
 	}
 
 	resp := authResponse{
-		User: userToResponse(user),
+		User: h.userToResponse(user),
 	}
 	c.JSON(http.StatusCreated, resp)
 }
@@ -114,7 +114,7 @@ func (h *userHandler) Signin(c *gin.Context) {
 	}
 
 	resp := authResponse{
-		User:         userToResponse(user),
+		User:         h.userToResponse(user),
 		AccessToken:  accessToken,
 		RefreshToken: user.RefreshToken,
 	}
@@ -166,10 +166,11 @@ func (h *userHandler) GetProfile(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, userToResponse(user))
+	c.JSON(http.StatusOK, h.userToResponse(user))
 }
 
-func userToResponse(user *domain.User) userResponse {
+func (h *userHandler) userToResponse(user *domain.User) userResponse {
+
 	return userResponse{
 		ID:          user.ID,
 		FirstName:   user.FirstName,
@@ -187,5 +188,5 @@ func userToResponse(user *domain.User) userResponse {
 }
 
 func errorResponse(err error) gin.H {
-	return gin.H{"errror": err.Error()}
+	return gin.H{"error": err.Error()}
 }
